@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <title>Document</title>
+  <style>
+    #header {
+      margin-bottom: 20px;
+    }
+    #target {
+      width: 200px;
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      background-color: blueviolet;
+      color: white;
+      border: 3px solid darkblue;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <button onclick="circle();">둥글게</button>
+    <button onclick="rect();">네모나게</button>
+    <button onclick="hide();">사라지게</button>
+    <button onclick="show();">나타나게</button>
+  </div>
+  <div id="target">까꿍</div>
+  <div id="footer">
+    여기는 아래 영역이에요
+  </div>
+  <script>
+    const $target = $('#target');
+    function circle() {
+      $target.css('border-radius', '200px');
+    }
+    function rect() {
+      $target.css('border-radius', '0px');
+    }
+    function hide() {
+      $target.css('display', 'none');
+    }
+    function show() {
+      $target.css('display', 'block');
+    }
+  </script>
+</html>
