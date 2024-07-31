@@ -2,116 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-    <title>Document</title>
+    <title>할일 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
       #app {
-        width: 1000px;
+        width: 60%;
+        margin:0 auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0,0,0,1);
+      }
+
+      .align-center {
+        text-align: center;
+      }
+
+      .flex-center {
+        display:flex; 
+        justify-content:center;
+      }
+
+      #input-container {
+        width: 70%;
         margin: 0 auto;
+        margin-bottom: 20px;
       }
 
-      #upper {
-        position: relative;
+      #input-container h1 {
+        text-align: center;
+        color:#333;
       }
 
-      #upper i {
+      #title {
+        width:70%;
+        padding: 10px;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color:white;
+        border: none;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      #todos-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      #todos-table th {
+        text-align: center;
         font-size: 1.5em;
-        color: white;
       }
 
-      #prev, #next {
-        background-color: rgba(220,220,220,0.2);
-        width:35px;
-        height: 350px;
-        line-height: 350px;
-        position: absolute;
-        text-align: center;
+      #todos-table, #todos-table th, #todos-table td {
+        border: 1px solid #ddd;
       }
 
-      #prev {
-        top: 0px;
-        left: 0px;
-      }
-
-      #next {
-        top:0px;
-        right: 0px;
-      }
-
-      #prev i:hover, #next i:hover {
-        cursor: pointer;
-      }
-
-      #lower {
-        text-align: center;
-        display: flex;
-        justify-content: center;
-      }
-      #lower a {
-        width: 30px;
-        height: 30px;
-        border-radius: 30px;
-        background-color: lightgrey;
-        margin: 0 5px;
-      }
-
-      #lower .select {
-        background-color: gray;
+      .finish {
+        text-decoration: line-through;
       }
     </style>
     <script>
-      $(document).ready(()=>{
-        const images = [];
-        images[0] = 'https://www.w3schools.com/howto/img_woods_wide.jpg';
-        images[1] = 'https://www.w3schools.com/howto/img_5terre_wide.jpg';
-        images[2] = 'https://www.w3schools.com/howto/img_mountains_wide.jpg';
-        images[3] = 'https://www.w3schools.com/howto/img_snow_wide.jpg';
-        let index = 0;
+      const todos = [];
+      let tno = 1;
 
-        const $prev = $('#prev');
-        const $next = $('#next');
-        const $slider = $('#slider');
-        $slider.attr('src', images[0]);
+      $(document).ready(function() {
+        const $title = $('#title');
+        const $addBtn = $('#add');
+        const $tbody = $('#todos');
 
-        $prev.click(function() {
-          index--;
-          if(index<0)
-            index=3;
-          $slider.attr('src', images[index]);
-        });
+        function printTodos() {
+          $tbody.empty();
+          for(const todo of todos) {
+            const titleClass = todo.finish ? 'finish' : '';
+            const html=`
+              <tr>
+                <td class='align-center'>${todo.tno}</td>
+                <td class='${titleClass}'>${todo.title}</td>
+                <td class='align-center'>${todo.writeday}</td>
+                <td class='flex-center'>
+                  <button class='toggle' style='margin-right:15px;' data-tno='${todo.tno}'>
+                    ${todo.finish? '작업중으로':'완료로'}
+                  </button>
+                  <button class='delete' data-tno='${todo.tno}'>삭제</button>
+                </td>
+              </tr>
+            `;
+            $tbody.append(html);
+          }
+        }
 
-        $next.click(function() {
-          index++;
-          if(index>3)
-            index=0;
-          $slider.attr('src', images[index]);
-        });
-
-        $('#lower a').click(function() {
-          $('#lower a').removeClass('select');
-          const index = parseInt($(this).attr("data-index"));
-          $slider.attr('src', images[index]);
-          $(this).addClass('select');
+        $addBtn.click(function() {
+          const title = $title.val();
+          if(title==='') {
+            alert('할일을 입력하세요');
+            return;
+          }
+          const newTodo = {tno:tno, title:title, writeday:new Date().toLocaleDateString(), finish:false};
+          todos.push(newTodo);
+          tno++;
+          printTodos();
+          $title.val('');
         })
+
+        $tbody.on('click', '.toggle', function() {
+          const tno = $(this).data('tno');
+          const todo = todos.find(t => t.tno === tno);
+          if (todo) {
+            todo.finish = !todo.finish;
+            printTodos();
+          }
+        });
+
+        $tbody.on('click', '.delete', function() {
+          const tno = $(this).data('tno');
+          for(let i=0; i<todos.length; i++) {
+            if(todos[i].tno===tno) {
+              todos.splice(i, 1);
+              printTodos();
+            }
+          }
+        });
       });
     </script>
 </head>
 <body>
-  <div id="app">
-    <div id="upper">
-      <img id='slider'>
-      <div id="prev"><i class="fa-solid fa-arrow-left"></i></div>
-      <div id="next"><i class="fa-solid fa-arrow-right"></i></div>
+    <div id="app">
+      <h1>할일 관리</h1>
+      <div id="input-container">
+        <input type="text" id="title" placeholder="할일 입력">
+        <button id="add">추가</button>
+      </div>
+      <table id="todos-table">
+        <colgroup>
+          <col style="width:10%;">
+          <col style="width:50%">
+          <col style="width:20%">
+          <col style="width:20%">
+        </colgroup>
+        <thead>
+          <th>번호</th>
+          <th>할일</th>
+          <th>작성일</th>
+          <th></th>
+        </thead>
+        <tbody id="todos">
+        </tbody>
+      </table>
     </div>
-    <div id="lower">
-      <a href="#" data-index="0" class="select"></a>
-      <a href="#" data-index="1"></a>
-      <a href="#" data-index="2"></a>
-      <a href="#" data-index="3"></a>
-    </div>
-  </div>
 </body>
-</html>

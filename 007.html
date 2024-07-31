@@ -1,90 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <style>
-    #page {
-      width: 360px;
-      margin: 0 auto;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+      $(document).ready(()=>{
+        const images = [];
+        images[0] = 'https://www.w3schools.com/howto/img_woods_wide.jpg';
+        images[1] = 'https://www.w3schools.com/howto/img_5terre_wide.jpg';
+        images[2] = 'https://www.w3schools.com/howto/img_mountains_wide.jpg';
+        images[3] = 'https://www.w3schools.com/howto/img_snow_wide.jpg';
+        let index = 0;
 
-    #page h1 {
-      text-align: center;
-    }
+        const $prev = $('#prev');
+        const $next = $('#next');
+        const $slider = $('#slider');
+        $slider.attr('src', images[0]);
 
-    .choice {
-      width: 150px;
-      height: 150px;
-      line-height: 150px;
-      color: white;
-      font-weight: bold;
-      border-radius: 150px;
-      margin: 10px;
-      text-align: center;
-      font-size: 1.25em;
-      display: inline-block;
-    }
-    .choice:hover {
-      cursor: pointer;
-    }
+        $prev.click(function() {
+          index--;
+          if(index<0)
+            index=3;
+          $slider.attr('src', images[index]);
+        });
 
-    #hol {
-      background-color: blue;
-    }
-    #jjack {
-      background-color: blueviolet;
-    }
-    #result {
-      text-align: center;
-    }
-    .win {
-      color: blue;
-    }
-    .lose {
-      color: red;
-    }
-  </style>
-  <script>
-    $(function() {
-      let win = 0;
-      let lose = 0;
-      $("#hol").on("click", function() {
-        const computerChoice = Math.floor(Math.random()*2);
-        const choice = 1;
-        if(computerChoice===choice) {
-          win++;
-          $('#result').text(`당신의 승리입니다. 총 ${win}승 ${lose}패 입니다`).attr('class','win');
-        } else {
-          lose++;
-          $('#result').text(`당신의 패배입니다. 총 ${win}승 ${lose}패 입니다`).attr('class','lose');
-        }
-      })
-      $("#jjack").on("click", function() {
-        const computerChoice = Math.floor(Math.random()*2);
-        const choice = 0;
-        if(computerChoice===choice) {
-          win++;
-          $('#result').text(`당신의 승리입니다. 총 ${win}승 ${lose}패 입니다`).attr('class','win');
-        } else {
-          lose++;
-          $('#result').text(`당신의 패배입니다. 총 ${win}승 ${lose}패 입니다`).attr('class','lose');
-        }
-      })
-    })
-  </script>
-  <title>Document</title>
+        $next.click(function() {
+          index++;
+          if(index>3)
+            index=0;
+          $slider.attr('src', images[++index]);
+        });
+
+      });
+    </script>
 </head>
 <body>
-  <div id="page">
-    <div>
-      <h1>홀짝을 선택하세요</h1>
-      <div class="choice" id="hol">홀</div>
-      <div class="choice" id="jjack">짝</div>
-    </div>
-    <p id="result"></p>
-  </div>
+    <img id='slider'>
+    <hr>
+    <button id='prev'>이전으로</button>
+    <button id='next'>다음으로</button>
 </body>
 </html>
