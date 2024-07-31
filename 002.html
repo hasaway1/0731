@@ -1,94 +1,48 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  <script>
-  </script>
-  <title>Document</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+    <script>
+        function check() {
+            const numInput = $("#num");
+            const num = numInput.val();
+            if(isNaN(num)===true || num==='') {
+                numInput.val('');
+                numInput.attr('placeholder',"숫자를 입력하세요");
+                return false;
+            }
+            return true;
+        }
 
-    #page {
-      width: 800px;
-      margin: 0 auto;
-    }
+        function calc() {
+            if(check()===true) {
+                const num = $("#num").val();
+                $("#result").val(num * num);
+            }
+        }
 
-    header, nav, footer {
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      border: 1px solid orange;
-    }
+        function reset() {
+            $("#num").val('')
+            $("#result").val('')
+        }
 
-    main {
-      display: flex;
-    }
+        $(document).ready(function() {
+            $("#num").blur(check);
+            $("#calc").click(calc);
+            $("#reset").click(reset);
+        })
 
-    #left {
-      height: 200px;;
-      flex-grow: 1;
-      background-color: green;
-    }
-
-    #right {
-      height: 200px;;
-      flex-grow: 1;
-      background-color: yellow;
-    }
-
-    section {
-      min-height: 500px;
-      flex-grow: 6;
-      background-color: gray;
-    }
-
-    nav ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-    }
-
-    nav ul li {
-      width: 100px;
-      height: 100%;
-      border: 1px solid deeppink;
-    }
-
-    nav ul li a{
-      color: black;
-      text-decoration: none;
-      display: block;
-    }
-
-    nav ul li a:hover {
-      background-color: blueviolet;
-      color:white;
-      font-weight: bold;
-    }
-  </style>
+    </script>
 </head>
 <body>
-  <div id="page">
-    <header>AAA</header>
-    <nav>
-      <ul>
-        <li><a href="#">aaa</a></li>
-        <li><a href="#">bbb</a></li>
-        <li><a href="#">ccc</a></li>
-      </ul>
-    </nav>
-    <main>
-      <aside id="left">XXX</aside>
-      <section>YYY</section>
-      <aside id="right">ZZZ</aside>
-    </main>
-    <footer>CCC</footer>
-  </div>
+    입력 : <input type="text" id="num">
+    제곱 : <input type="text" id="result" disabled>
+    <button id='calc'>계산하기</button>
+    <button id='reset'>리셋하기</button>
 </body>
 </html>

@@ -1,83 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
-    #page {
-      width: 360px;
-      margin: 0 auto;
+    #level {
+      display: flex;
+      color:white;
     }
 
-    #page h1 {
+    #level>div{
+      flex-grow: 1;
       text-align: center;
+      display: flex;
+      justify-content: space-between;
+      padding-left:7%;
+      padding-right:5px;
     }
 
-    .choice {
-      width: 150px;
-      height: 150px;
-      line-height: 150px;
-      color: white;
-      font-weight: bold;
-      border-radius: 150px;
-      margin: 10px;
-      text-align: center;
-      font-size: 1.25em;
-      display: inline-block;
-    }
-    .choice:hover {
-      cursor: pointer;
+    .lv1 {
+      background-color: #7da4bd;
     }
 
-    #hol {
-      background-color: blue;
+    .lv2 {
+      background-color: #557cd5;
     }
-    #jjack {
-      background-color: blueviolet;
+
+    .lv3 {
+      background-color: #787ad6;
     }
-    #result p {
-      text-align: center;
+
+    .lv4 {
+      background-color: #ba78d9;
     }
-    .win {
-      color: blue;
+
+    .lv5 {
+      background-color: #f85264;
     }
-    .lose {
-      color: red;
+
+    #result {
+      color:red;
+    }
+
+    .small {
+      color: black;
+      font-size: 0.8em;
+      display: flex;
+      align-items: center;
+    }
+
+    #panel {
+      display: none;
     }
   </style>
   <script>
-    $(function() {
-      $("#hol").on("click", function() {
-        const computerChoice = Math.floor(Math.random()*2);
-        const choice = 1;
-        console.log(computerChoice);
-        if(computerChoice===choice) 
-          $('#result').append('<p class="win">당신의 승리입니다</p>');
-        else 
-          $('#result').append('<p class="lose">당신의 패배입니다</p>');
-      })
-      $("#jjack").on("click", function() {
-        const computerChoice = Math.floor(Math.random()*2);
-        const choice = 0;
-        if(computerChoice===choice) 
-          $('#result').append('<p class="win">당신의 승리입니다</p>');
-        else 
-          $('#result').append('<p class="lose">당신의 패배입니다</p>');
-      })
-    })
+    $(document).ready(function() {
+      $('#calc').click(function() {
+        const 키 = parseInt($('#length').val())/100;
+        const 체중 = parseFloat($('#weight').val());
+        const bmi계산 = 체중/(키*키);
+        const bmi = Math.round(bmi계산*100)/100;
+        
+        if(bmi<18.5) {
+          $('#result').text(`${bmi}(저체중)`);
+        } else if(bmi<23) {
+          $('#result').text(`${bmi}(정상)`);
+        } else if(bmi<25) {
+          $('#result').text(`${bmi}(과체중)`);
+        } else if(bmi<30) {
+          $('#result').text(`${bmi}(비만)`);
+        } else {
+          $('#result').text(`${bmi}(고도비만)`);
+        }
+
+        $('#panel').css('display','block');
+      });
+    });
   </script>
   <title>Document</title>
 </head>
 <body>
-  <div id="page">
-    <div>
-      <h1>홀짝을 선택하세요</h1>
-      <div class="choice" id="hol">홀</div>
-      <div class="choice" id="jjack">짝</div>
-    </div>
-    <div id="result">
+  <fieldset>
+    <legend>bmi계산</legend>
+    <label>신장</label>
+    <input type="number" id="length" placeholder="cm">
+    <label>체중</label>
+    <input type="number" id="weight" placeholder="kg">
+    <button id="calc">계산</button>
+  </fieldset>
+  <div id="panel">
+    <h1>나의 신체질량지수 (BMI) <span id="result"></span></h1>
+    <div id="level">
+      <div class="lv1">
+        <span>저체중</span>
+        <span class="small">18.5</span>
+      </div>
+      <div class="lv2">
+        <span>정상</span>
+        <span class="small">23</span>
+      </div>
+      <div class="lv3">
+        <span>과체중</span>
+        <span class="small">25</span>
+      </div>
+      <div class="lv4">
+        <span>비만</span>
+        <span class="small">30</span>
+      </div>
+      <div class="lv5">
+        <span>고도비만</span>
+        <span class="small"></span>
+      </div>
     </div>
   </div>
 </body>
